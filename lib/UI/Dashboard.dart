@@ -39,6 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 return Center(child: CircularProgressIndicator());
               }
               if (state is ProductSuccess) {
+                print("rebuild1");
                 return Expanded(
                   child: GridView.builder(
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

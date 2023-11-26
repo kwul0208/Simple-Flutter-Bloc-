@@ -16,7 +16,8 @@ class ProductLoading extends ProductState {}
 class ProductSuccess extends ProductState {
   final List<ProductModel> products;
   late int productsLength = 0;
-  ProductSuccess({required this.products, required this.productsLength});
+  late int productTotal = 0;
+  ProductSuccess({required this.products, required this.productsLength, required this.productTotal});
 
   @override
   List<Object> get props => [products];

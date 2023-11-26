@@ -19,7 +19,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       switch (response.statusCode) {
         case 200:
         print("===remit");
-          emit(ProductSuccess(products: ProductModelFromJson(response.body), productsLength: response.body.length));
+          emit(ProductSuccess(products: ProductModelFromJson(response.body), productsLength: ProductModelFromJson(response.body).length, productTotal: ProductModelFromJson(response.body).length));
           break;
         case 404:
           emit(ProductError(message: "Kesalahan Data"));
@@ -34,7 +34,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       final currentState = state;
       if(currentState is ProductSuccess){
         final List<ProductModel> updateProduct = List.from(currentState.products)..remove(event.clickedProductRemove);
-        emit(ProductSuccess(products: updateProduct, productsLength: updateProduct.length));
+        emit(ProductSuccess(products: updateProduct, productsLength: updateProduct.length, productTotal: updateProduct.length));
       }
     });
     // on<RemoveProduct>((event, emit) {
@@ -59,7 +59,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       if (currentState is ProductSuccess) {
         final List<ProductModel> updatedProducts = List.from(currentState.products)
           ..add(event.clickedProduct);
-        emit(ProductSuccess(products: updatedProducts, productsLength: updatedProducts.length));
+        emit(ProductSuccess(products: updatedProducts, productsLength: updatedProducts.length, productTotal: currentState.productTotal));
       }
     });
   }
@@ -71,4 +71,5 @@ void test() {
     // Lakukan sesuatu dengan daftar produk
     print(jsonEncode(products));
   }
-}}
+  }
+}
