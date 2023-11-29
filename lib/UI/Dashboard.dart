@@ -1,3 +1,4 @@
+import 'package:bloc_training/UI/detail/ButtonGroup.dart';
 import 'package:bloc_training/UI/detail/Result.dart';
 import 'package:bloc_training/bloc/auth/auth_bloc_bloc.dart';
 import 'package:bloc_training/bloc/product_bloc.dart';
@@ -85,26 +86,7 @@ class _DashboardState extends State<Dashboard> {
                                 Text(state.products[i].category.name),
                                 Text(state.products[i].price.toString()),
                                 Text("Total : ${state.productsLength}"),
-                                Row(
-                                  children: [
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          context.read<ProductBloc>().add(
-                                              ProductRemove(
-                                                  clickedProductRemove:
-                                                      state.products[i]));
-                                        },
-                                        child: Text("min")),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          context.read<ProductBloc>().add(
-                                              ProductClicked(
-                                                  clickedProduct:
-                                                      state.products[i]));
-                                        },
-                                        child: Text("plus"))
-                                  ],
-                                )
+                                ButtonGrup()
                               ],
                             ),
                           ),
@@ -127,3 +109,4 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 }
+
