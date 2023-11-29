@@ -1,17 +1,20 @@
 import 'package:bloc_training/UI/detail/Result.dart';
+import 'package:bloc_training/bloc/auth/auth_bloc_bloc.dart';
 import 'package:bloc_training/bloc/product_bloc.dart';
+import 'package:bloc_training/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class Dashboard extends StatefulWidget {
+  const Dashboard({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Dashboard> createState() => _DashboardState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _DashboardState extends State<Dashboard> {
   late final ProductBloc _productBloc;
 
   @override
@@ -24,9 +27,26 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     print("mainBuild");
+    return BlocBuilder<AuthBlocBloc, AuthBlocState>(
+      builder: (context, state) {
+        return _buidDashboard();
+      },
+    );
+  }
+
+  Scaffold _buidDashboard() {
     return Scaffold(
       appBar: AppBar(
         title: Text("Flutter BLoc"),
+        actions: [
+          GestureDetector(
+            onTap: ()async{
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.clear();
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyApp(isLoggedIn: false)), (route) => false);
+            },
+            child: Icon(Icons.login_outlined))
+        ],
       ),
       body: Column(
         children: [
@@ -42,7 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 print("rebuild1");
                 return Expanded(
                   child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: .58,
                       ),
@@ -67,17 +88,21 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Row(
                                   children: [
                                     ElevatedButton(
-                                      onPressed: (){
-                                        context.read<ProductBloc>().add(ProductRemove(clickedProductRemove: state.products[i]));
-                                      }, 
-                                      child: Text("min")
-                                    ),
+                                        onPressed: () {
+                                          context.read<ProductBloc>().add(
+                                              ProductRemove(
+                                                  clickedProductRemove:
+                                                      state.products[i]));
+                                        },
+                                        child: Text("min")),
                                     ElevatedButton(
-                                      onPressed: (){
-                                        context.read<ProductBloc>().add(ProductClicked(clickedProduct:state.products[i]));
-                                      }, 
-                                      child: Text("plus")
-                                    )
+                                        onPressed: () {
+                                          context.read<ProductBloc>().add(
+                                              ProductClicked(
+                                                  clickedProduct:
+                                                      state.products[i]));
+                                        },
+                                        child: Text("plus"))
                                   ],
                                 )
                               ],
