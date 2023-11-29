@@ -17,3 +17,11 @@ class LoginErrorState extends AuthBlocState{
   late String msg;
   LoginErrorState({required this.msg});
 }
+
+class LoginCheckState extends AuthBlocState{
+  late String msg;
+  LoginCheckState({required this.msg});
+}
+
+class Authenticated extends AuthBlocState{}
+class UnAuthenticated extends AuthBlocState{}

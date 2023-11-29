@@ -10,9 +10,9 @@ part 'auth_bloc_state.dart';
 class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
   var repo = AuthRepository();
   AuthBlocBloc(AuthBlocState initialState, this.repo) : super(initialState){
-    on<StartAuthEvent>((event, state)async{
-      emit(LoginInitState());
-    });
+    // on<StartAuthEvent>((event, state)async{
+    //   emit(LoginInitState());
+    // });
     on<LoginButtonPress>((event, emit)async{
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       print("==== auth ====");
@@ -27,6 +27,17 @@ class AuthBlocBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       }else{
         emit(LoginErrorState(msg: data['message']));
       }
+    });
+    on<StartAuthEvent>((event, emit) async {
+      await Future.delayed(Duration(seconds: 3));
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('access_token');
+      if (token == null) {
+        emit(UnAuthenticated());
+      }else{
+        emit(Authenticated());
+      }
+
     });
   }
     // @override
